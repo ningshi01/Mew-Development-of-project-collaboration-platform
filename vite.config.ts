@@ -1,70 +1,23 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'node:path'
-import path from 'path'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
-
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    AutoImport({
-      imports: [
-        'vue',
-        {
-          'naive-ui': [
-            'useDialog',
-            'useMessage',
-            'useNotification',
-            'useLoadingBar'
-          ]
-        }
-      ]
-    }),
-    Components({
-      resolvers: [NaiveUiResolver()]
-    })
-  ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname,'src')
+export default defineConfig(({ command, mode }) => {
+  return {
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://101.43.215.188:8001/api/',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
     },
-    extensions: ['.js', '.json', '.ts']
-  },
-  server: {
-    host: '0.0.0.0',
-    port: 8080,
-    // 是否开启 https
-    https: false,
-    proxy: {
-      '/api': {
-        target: 'http://121.36.65.25:8000/',
-        changeOrigin: true,
-
-      }
+    plugins: [vue()],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
-  build: {
-    rollupOptions: {
-      // 将需要处理的资源文件添加到 external 中
-      external: [
-        'src/assets/y1.jpg',
-        'src/assets/displayPaper.jpg',
-        'date-fns',
-        'src/assets/logo1.png',
-        'src/assets/tempLogo.png',
-        'src/assets/ScholarPage .jpg',
-        'src/assets/messagePage.jpg ',
-        'src/assets/messagePage.jpg',
-      ],
-    },
-  },
-
-})
+  };
+});

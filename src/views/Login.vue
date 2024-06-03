@@ -1,266 +1,299 @@
 <template>
-  <div style="background:linear-gradient(#add8e6,#87cefa,#b0e0e6);width: 60%;height: 100%;">
-  </div>
-  <n-space class="card-container">
-    <n-button @click="toIntroPage" :bordered=false class="introButton" >
-      <n-text style="font-weight: bold;color: #f8f8f8;font-size: 16px" >平台介绍</n-text>
-    </n-button>
-    <n-carousel autoplay class="carousel" interval=3000 @update:current-index="changeImg">
-      <img class="carousel-img" src="../assets/scholarPage.jpg">
-      <img class="carousel-img" src="../assets/searchPaper.jpg">
-    </n-carousel>
-    <div style="display: flex;flex-direction: column;align-items: center;left:16%;top:67%;position: absolute">
-      <n-text v-if="imgIndex==1" style="font-weight: bold;color: black;font-size: 23px">MewSci学者门户</n-text>
-      <n-text v-if="imgIndex==1" style="font-size: 18px;color: black;margin-top: 4%">详尽的数据陈列，生动的图表展示，让科研变得更简单</n-text>
+  <div class="main-box">
+    <div :class="['container', 'container-register', { 'is-txl': isLogin }]">
+      <form>
+        <h2 class="title">加入MewTeam</h2>
+        <input
+          class="form__input"
+          type="text"
+          placeholder="用户名"
+          v-model="registerForm.name"
+        />
+        <input
+          class="form__input"
+          type="text"
+          placeholder="邮箱"
+          v-model="registerForm.email"
+        />
+        <input
+          class="form__input"
+          type="text"
+          placeholder="姓名"
+          v-model="registerForm.realName"
+        />
+        <input
+          class="form__input"
+          type="password"
+          placeholder="密码"
+          v-model="registerForm.password"
+        />
+        <input
+          class="form__input"
+          type="password"
+          placeholder="确认密码"
+          v-model="registerForm.rePassword"
+        />
+        <div class="primary-btn" @click="register">立即注册</div>
+      </form>
     </div>
-    <div style="display: flex;flex-direction: column;align-items: center;left:16%;top:67%;position: absolute">
-      <n-text v-if="imgIndex==0" style="font-weight: bold;color: black;font-size: 23px">MewSci文献搜索</n-text>
-      <n-text v-if="imgIndex==0" style="font-size: 18px;color: black;margin-top: 4%">丰富的数据来源，完善的分类体系，让搜索变得更直接</n-text>
+    <div
+      :class="['container', 'container-login', { 'is-txl is-z200': isLogin }]"
+    >
+      <form>
+        <h2 class="title">欢迎使用MewTeam</h2>
+        <input
+          class="form__input"
+          type="text"
+          placeholder="邮箱"
+          v-model="loginForm.user"
+        />
+        <input
+          class="form__input"
+          type="password"
+          placeholder="密码"
+          v-model="loginForm.password"
+        />
+        <div class="primary-btn" @click="login">立即登录</div>
+      </form>
     </div>
-    <n-image src="/tempLogo.png" class="logo" @click.prevent></n-image>
-    <n-card v-if="showFirstCard" class="card">
-      <n-text class="text">
-        欢迎使用MewScience
-      </n-text>
-      <n-input v-model:value="username1" size="large" round placeholder="请输入用户名" class="input">
-      </n-input>
-      <n-input v-model:value="password1" size="large" round placeholder="请输入密码" class="input">
-      </n-input>
-      <n-button round type="info" class="loginButton" @click="login">
-        <n-text class="loginText">
-          登录
-        </n-text>
-      </n-button>
-      <n-button quaternary round type="info" class="registerButton">
-        <n-text class="text1" @click="showFirstCard=false;showSecondCard=true">
-          立即注册
-        </n-text>
-      </n-button>
-      <n-text class="text2">
-        |
-      </n-text>
-      <n-button quaternary round type="info" class="forgetButton">
-        <n-text class="text3">
-          忘记密码
-        </n-text>
-      </n-button>
-    </n-card>
-    <n-card v-if="showSecondCard" class="card">
-      <div>
-        <n-text class="text">
-          欢迎加入MewScience
-        </n-text>
+    <div :class="['switch', { login: isLogin }]">
+      <div class="switch__circle"></div>
+      <div class="switch__circle switch__circle_top"></div>
+      <div class="switch__container">
+        <h2>{{ isLogin ? "第一次使用？" : "已经有一个帐号" }}</h2>
+
+        <div class="primary-btn" @click="isLogin = !isLogin">
+          {{ isLogin ? "立即注册" : "立即登录" }}
+        </div>
       </div>
-      <n-text class="text4">
-        已有账号？使用
-      </n-text>
-      <n-button quaternary round type="info" class="returnButton">
-        <n-text class="text5" @click="showFirstCard=true;showSecondCard=false">
-          账号密码登录
-        </n-text>
-      </n-button>
-      <n-input v-model:value="username2" size="large" round placeholder="设置您的用户名" class="input3">
-      </n-input>
-      <n-input v-model:value="password2" size="large" round placeholder="设置您的登录密码" class="input">
-      </n-input>
-      <n-input v-model:value="email" size="large" round placeholder="请输入邮箱" class="input">
-      </n-input>
-      <n-input v-model:value="firstname" size="large" round placeholder="名" class="input1">
-      </n-input>
-      <n-input v-model:value="lastname" size="large" round placeholder="姓" class="input2">
-      </n-input>
-      <n-button round type="info" class="loginButton" @click="register">
-        <n-text class="loginText">
-          注册
-        </n-text>
-      </n-button>
-    </n-card>
-  </n-space>
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref,onMounted} from 'vue';
-import {accountLogin,accountRegister} from "../api";
-import { useRouter,useRoute} from 'vue-router';
-import {useMessage} from 'naive-ui'
-const message = useMessage();
-const router = useRouter();
-const route = useRoute();
-const showFirstCard = ref(true);
-const showSecondCard = ref(false);
-const username1 =ref('');
-const password1 =ref('');
-const username2 = ref('');
-const password2 = ref('');
-const email = ref('');
-const firstname = ref('');
-const lastname = ref('');
-const indentity = ref(0);
-const imgIndex = ref(1);
-const login = () =>{
-  accountLogin({
-    username:username1.value,
-    password:password1.value
-  }).then(res=>{
-    if(res.errno == 10002){
-      message.error('用户名或密码错误')
-    }
-    else {
-      indentity.value=(res as any).data.identify
-      if(indentity.value==0){
-        router.push('/Introduction')
-      }
-      if(indentity.value==1){
-        router.push('/admin')
-      }
-    }
-  })
-}
-const changeImg = (index1:number,index2:number) =>{
-  imgIndex.value=index2;
-}
-const register = () =>{
-  accountRegister({
-    username:username2.value,
-    password:password2.value,
-    email:email.value,
-    first_name:firstname.value,
-    last_name:lastname.value
-  }).then(res=>{
-    if(res.errno == 0){
-      message.success('注册成功');
-      showFirstCard.value=true;
-      showSecondCard.value=false;
-    }
-    if(res.errno == 10001){
-      message.error('用户名已存在')
-    }
+<script>
+import axios from "axios";
+import { ElMessage} from "element-plus";
 
-  })
+export default {
+  name: 'Login',
+  data() {
+    return {
+      isLogin: false,
+      loginForm: {
+        user: '',
+        password: '',
+      },
+      registerForm: {
+        realName:'',
+        name: '',
+        email: '',
+        password: '',
+        rePassword: '',
+      },
+    }
+  },
+  methods: {
+    login() {
+        if(this.loginForm.user.match('^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$')){
+        console.log("邮箱格式正确"),
+        console.log(axios.post('/api/user/login/'))
+        }
+        else{
+          ElMessage({
+              message: '邮箱格式错误，请重新输入',
+              type: 'error',
+            })
+        }
+
+    },
+    register() {
+      if(!this.registerForm.email.match('^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$')){
+        ElMessage({
+              message: '箱格式错误，请重新输入',
+              type: 'error',
+            })
+        }
+        else if(!this.registerForm.password.match('^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$')){
+          ElMessage({
+              message: '密码至少八位且包含数字和字母',
+              type: 'error',
+            })
+    }
+      else if(this.registerForm.password!=this.registerForm.rePassword){
+      ElMessage({
+              message: '两次输入密码不一样',
+              type: 'error',
+            })
+    }
+    else{
+      console.log(axios.post('/api/user/register/'))
+    }
+  },
 }
-const toIntroPage = () =>{
-  router.push('/Introduction')
 }
 </script>
 
-<style scoped>
-.carousel {
-  position: absolute;
-  left:9%;
-  top: 12%;
-  width: 42%;
-  height: 50%;
-}
-.carousel-img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.card-container{
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.logo{
-  position: absolute;
-  left: 73%;
-  top: 10%;
-}
-.introButton{
-  width: 8%;
-  height: 5%;
-  position: absolute;
-  left: 24%;
-  top:80%;
-  background:linear-gradient(to right,#3770f2,#7a70dc);
-}
-.card {
-  width: 30%;
-  height: 60%;
-  position: absolute;
-  top: 53%;
-  left: 80%;
-  transform: translate(-50%, -50%);
-  padding: 3%;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-}
-.input {
-  width:97%;
-  height: 10%;
-  margin-left: 2%;
-  margin-top: 8%;
-  background-color: rgba(128, 128, 128, 0.1);
-}
-.input1 {
-  width:42%;
-  height: 10%;
-  margin-left: 2%;
-  margin-top: 8%;
-  background-color: rgba(128, 128, 128, 0.1);
-}
-.input2 {
-  width:42%;
-  height: 10%;
-  margin-left: 12%;
-  margin-top: 8%;
-  background-color: rgba(128, 128, 128, 0.1);
-}
-.input3 {
-  width:97%;
-  height: 10%;
-  margin-left: 2%;
-  margin-top: 2%;
-  background-color: rgba(128, 128, 128, 0.1);
-}
-.text{
-  margin-left: 16%;
-  font-weight: bold;
-  font-size: 25px;
-}
-.loginText{
-  font-size: 18px;
-  color: #f2f2f2;
-}
-.loginButton{
-  margin-top: 8%;
-  margin-left: 2%;
-  width: 97%;
-  height: 10%;
-}
-.text1{
-  color: #338cde;
-  font-size: 15px;
-}
-.text2{
-  font-size: 15px;
-  margin-left: 8%;
-}
-.text3{
-  font-size: 15px;
-}
-.text4{
-  font-size: 14px;
-  margin-top: 25%;
-  margin-left: 22%;
-}
-.text5{
-  color: #338cde;
-  font-size: 13px;
-}
-.registerButton{
-  margin-top: 25%;
-  margin-left: 14%;
-}
-.forgetButton{
-  margin-top: 25%;
-  margin-left: 14%;
-}
-.returnButton{
-  margin-left: -2%;
-  &:hover {
-    background-color: transparent;
+<style lang="less" scoped>
+.main-box {
+  margin: auto;
+  margin-top: 80px;
+  position: relative;
+  width: 1000px;
+  min-width: 1000px;
+  min-height: 600px;
+  height: 600px;
+  padding: 25px;
+  background-color: #ecf0f3;
+  box-shadow: 10px 10px 10px #d1d9e6, -10px -10px 10px #f9f9f9;
+  border-radius: 12px;
+  overflow: hidden;
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 600px;
+    height: 100%;
+    padding: 25px;
+    background-color: #ecf0f3;
+    transition: all 1.25s;
+    form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      color: #a0a5a8;
+      .title {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 3;
+        color: #181818;
+      }
+      .text {
+        margin-top: 30px;
+        margin-bottom: 12px;
+      }
+      .form__input {
+        width: 350px;
+        height: 40px;
+        margin: 4px 0;
+        padding-left: 25px;
+        font-size: 13px;
+        letter-spacing: 0.15px;
+        border: none;
+        outline: none;
+        // font-family: 'Montserrat', sans-serif;
+        background-color: #ecf0f3;
+        transition: 0.25s ease;
+        border-radius: 8px;
+        box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #f9f9f9;
+        &::placeholder {
+          color: #a0a5a8;
+        }
+      }
+    }
+  }
+  .container-register {
+    z-index: 100;
+    left: calc(100% - 600px);
+  }
+  .container-login {
+    left: calc(100% - 600px);
+    z-index: 0;
+  }
+  .is-txl {
+    left: 0;
+    transition: 1.25s;
+    transform-origin: right;
+  }
+  .is-z200 {
+    z-index: 200;
+    transition: 1.25s;
+  }
+  .switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 400px;
+    padding: 50px;
+    z-index: 200;
+    transition: 1.25s;
+    background-color: #ecf0f3;
+    overflow: hidden;
+    box-shadow: 4px 4px 10px #d1d9e6, -4px -4px 10px #f9f9f9;
+    color: #a0a5a8;
+    .switch__circle {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background-color: #ecf0f3;
+      box-shadow: inset 8px 8px 12px #d1d9e6, inset -8px -8px 12px #f9f9f9;
+      bottom: -60%;
+      left: -60%;
+      transition: 1.25s;
+    }
+    .switch__circle_top {
+      top: -30%;
+      left: 60%;
+      width: 300px;
+      height: 300px;
+    }
+    .switch__container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: absolute;
+      width: 400px;
+      padding: 50px 55px;
+      transition: 1.25s;
+      h2 {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 3;
+        color: #181818;
+      }
+      p {
+        font-size: 14px;
+        letter-spacing: 0.25px;
+        text-align: center;
+        line-height: 1.6;
+      }
+    }
+  }
+  .login {
+    left: calc(100% - 500px);
+    .switch__circle {
+      left: 0;
+    }
+  }
+  .primary-btn {
+    width: 180px;
+    height: 50px;
+    border-radius: 25px;
+    margin-top: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    background-color: #4b70e2;
+    color: #f9f9f9;
+    cursor: pointer;
+    box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #f9f9f9;
+    &:hover {
+      box-shadow: 4px 4px 6px 0 rgb(255 255 255 / 50%),
+        -4px -4px 6px 0 rgb(116 125 136 / 50%),
+        inset -4px -4px 6px 0 rgb(255 255 255 / 20%),
+        inset 4px 4px 6px 0 rgb(0 0 0 / 40%);
+    }
   }
 }
 </style>

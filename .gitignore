@@ -13,7 +13,6 @@ dist
 dist-ssr
 coverage
 *.local
-components.d.ts
 
 /cypress/videos/
 /cypress/screenshots/
@@ -27,5 +26,3 @@ components.d.ts
 *.njsproj
 *.sln
 *.sw?
-
-auto-imports.d.ts
